@@ -1,0 +1,91 @@
+:root {
+    --main-h: 240;
+    --main-s: 20%;
+
+    --accent-h: 120;
+    --accent-s: 20%;
+
+    --background-h: 180;
+    --background-s: 0%;
+
+    --main-color-00-raw: var(--main-h) var(--main-s) 0%;
+    --main-color-00: hsl(var(--main-color-00-raw));
+    --main-color-10-raw: var(--main-h) var(--main-s) 10%;
+    --main-color-10: hsl(var(--main-color-10-raw));
+    --main-color-20-raw: var(--main-h) var(--main-s) 20%;
+    --main-color-20: hsl(var(--main-color-20-raw));
+    --main-color-30-raw: var(--main-h) var(--main-s) 30%;
+    --main-color-30: hsl(var(--main-color-30-raw));
+    --main-color-40-raw: var(--main-h) var(--main-s) 40%;
+    --main-color-40: hsl(var(--main-color-40-raw));
+    --main-color-50-raw: var(--main-h) var(--main-s) 50%;
+    --main-color-50: hsl(var(--main-color-50-raw));
+    --main-color-60-raw: var(--main-h) var(--main-s) 60%;
+    --main-color-60: hsl(var(--main-color-60-raw));
+    --main-color-70-raw: var(--main-h) var(--main-s) 70%;
+    --main-color-70: hsl(var(--main-color-70-raw));
+    --main-color-80-raw: var(--main-h) var(--main-s) 80%;
+    --main-color-80: hsl(var(--main-color-80-raw));
+    --main-color-90-raw: var(--main-h) var(--main-s) 90%;
+    --main-color-90: hsl(var(--main-color-90-raw));
+    --main-color-100-raw: var(--main-h) var(--main-s) 100%;
+    --main-color-100: hsl(var(--main-color-100-raw));
+
+    --accent-color-00-raw: var(--accent-h) var(--accent-s) 0%;
+    --accent-color-00: hsl(var(--accent-color-00-raw));
+    --accent-color-10-raw: var(--accent-h) var(--accent-s) 10%;
+    --accent-color-10: hsl(var(--accent-color-10-raw));
+    --accent-color-20-raw: var(--accent-h) var(--accent-s) 20%;
+    --accent-color-20: hsl(var(--accent-color-20-raw));
+    --accent-color-30-raw: var(--accent-h) var(--accent-s) 30%;
+    --accent-color-30: hsl(var(--accent-color-30-raw));
+    --accent-color-40-raw: var(--accent-h) var(--accent-s) 40%;
+    --accent-color-40: hsl(var(--accent-color-40-raw));
+    --accent-color-50-raw: var(--accent-h) var(--accent-s) 50%;
+    --accent-color-50: hsl(var(--accent-color-50-raw));
+    --accent-color-60-raw: var(--accent-h) var(--accent-s) 60%;
+    --accent-color-60: hsl(var(--accent-color-60-raw));
+    --accent-color-70-raw: var(--accent-h) var(--accent-s) 70%;
+    --accent-color-70: hsl(var(--accent-color-70-raw));
+    --accent-color-80-raw: var(--accent-h) var(--accent-s) 80%;
+    --accent-color-80: hsl(var(--accent-color-80-raw));
+    --accent-color-90-raw: var(--accent-h) var(--accent-s) 90%;
+    --accent-color-90: hsl(var(--accent-color-90-raw));
+    --accent-color-100-raw: var(--accent-h) var(--accent-s) 100%;
+    --accent-color-100: hsl(var(--accent-color-100-raw));
+
+    --background-color-00-raw: var(--background-h) var(--background-s) 0%;
+    --background-color-00: hsl(var(--background-color-00-raw));
+    --background-color-10-raw: var(--background-h) var(--background-s) 10%;
+    --background-color-10: hsl(var(--background-color-10-raw));
+    --background-color-20-raw: var(--background-h) var(--background-s) 20%;
+    --background-color-20: hsl(var(--background-color-20-raw));
+    --background-color-30-raw: var(--background-h) var(--background-s) 30%;
+    --background-color-30: hsl(var(--background-color-30-raw));
+    --background-color-40-raw: var(--background-h) var(--background-s) 40%;
+    --background-color-40: hsl(var(--background-color-40-raw));
+    --background-color-50-raw: var(--background-h) var(--background-s) 50%;
+    --background-color-50: hsl(var(--background-color-50-raw));
+    --background-color-60-raw: var(--background-h) var(--background-s) 60%;
+    --background-color-60: hsl(var(--background-color-60-raw));
+    --background-color-70-raw: var(--background-h) var(--background-s) 70%;
+    --background-color-70: hsl(var(--background-color-70-raw));
+    --background-color-80-raw: var(--background-h) var(--background-s) 80%;
+    --background-color-80: hsl(var(--background-color-80-raw));
+    --background-color-90-raw: var(--background-h) var(--background-s) 90%;
+    --background-color-90: hsl(var(--background-color-90-raw));
+    --background-color-100-raw: var(--background-h) var(--background-s) 100%;
+    --background-color-100: hsl(var(--background-color-100-raw));
+
+    --gray-00: hsl(0, 0%, 0%);
+    --gray-10: hsl(0, 0%, 10%);
+    --gray-20: hsl(0, 0%, 20%);
+    --gray-30: hsl(0, 0%, 30%);
+    --gray-40: hsl(0, 0%, 40%);
+    --gray-50: hsl(0, 0%, 50%);
+    --gray-60: hsl(0, 0%, 60%);
+    --gray-70: hsl(0, 0%, 70%);
+    --gray-80: hsl(0, 0%, 80%);
+    --gray-90: hsl(0, 0%, 90%);
+    --gray-100: hsl(0, 0%, 100%);
+}
