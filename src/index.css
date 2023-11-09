@@ -1,9 +1,3 @@
-:root {
-  --top-bg-color: black;
-  --bottom-bg-color: rgb(54, 55, 61);
-  --light-color: rgb(216, 216, 216);
-}
-
 * {
   margin: 0px;
   padding: 0px;
@@ -23,52 +17,53 @@ body,
 }
 
 .bg {
-  background: rgb(0, 0, 0);
-  background: linear-gradient(
+  background: var(--background-color-90);
+  /* background: hsl(var(--background-color-h) var(--background-color-s)
+  calc(var(--background-color-l) + 0%)); */
+  /* background: linear-gradient(
     180deg,
-    var(--top-bg-color) 5%,
-    var(--bottom-bg-color) 100%
-  );
+    var(--background-color-00) 5%,
+    black 100%
+  ); */
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   height: 100vh;
   width: 100vw;
   position: fixed;
-  z-index: -1;
+  z-index: -2;
 }
 
 .app {
   height: 100%;
   width: 100%;
-  font-family: mainfont;
-  color: var(--light-color);
+  font-family: "Raleway", sans-serif;
+  color: var(--gray-10);
+  display: flex;
+  flex-direction: column;
 }
 
 ::-webkit-scrollbar {
   width: 0px;
 }
-/* 
-::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0.3);
-}
-
-::-webkit-scrollbar-thumb {
-background-color: darkgrey;
-outline: 1px solid slategrey;
-} */
 
 header {
-  background-color: var(--top-bg-color);
+  /* background-color: hsla(var(--background-color-00-raw) 1); */
+  background-color: var(--background-color-80);
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
   position: fixed;
   z-index: 1;
 }
 
+.page-content {
+  flex: 1;
+}
+
 footer {
+  flex-shrink: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -81,23 +76,27 @@ footer {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  border-top: 1px solid var(--light-color);
+  border-top: 1px solid var(--gray-80);
   border-radius: 3%;
 }
 
-a {
-  color: rgb(216, 216, 216);
+.article {
+  width: 65%;
+}
+
+/* .menu-link > * {
+  color: var(--gray-80);
+} */
+
+
+.footer-link {
+  max-height: 40px;
+  color: var(--gray-10);
   text-decoration: none;
   padding: 10px;
-}
-
-a:hover {
-  cursor: pointer;
-  background-color: rgb(36, 36, 36);
-}
-
-a:active {
-  background-color: rgb(58, 58, 58);
+  text-align: center;
+  flex: 1;
+  transition: all 0.4s ease;
 }
 
 .title {
@@ -116,7 +115,8 @@ main {
 }
 
 .content {
-  width: 60%;
+  width: 90%;
+  max-width: 750px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -126,15 +126,23 @@ h1 {
   position: sticky;
   font-weight: 100;
   font-size: 72pt;
+  color: var(--accent-color-30);
+  text-shadow: 1px 1px 2px var(--gray-50);
 }
 
-h3 {
+h2,
+h3,
+h4 {
   font-size: xx-large;
+  font-weight: 200;
+  text-shadow: 1px 1px 2px var(--gray-50);
 }
 
 p {
   margin: 10px auto;
   font-size: large;
+  font-weight: 300;
+  color: var(--gray-10);
 }
 
 .title :last-child {
@@ -143,4 +151,25 @@ p {
 
 .filler {
   padding: 25px;
+}
+
+.profile-picture {
+  object-fit: cover;
+  width: 100%;
+  aspect-ratio: 1;
+  opacity: 50%;
+}
+
+.profile-picture-wrapper {
+  background-color: transparent;
+  bottom: 0;
+  right: 0;
+  width: 50%;
+  position: fixed;
+  z-index: -1;
+}
+
+.container {
+  display: inline-block;
+  cursor: pointer;
 }

@@ -5,13 +5,17 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
+import dotenv from "dotenv";
+import { resolve } from "path";
 
-
-import Root from "./routes/root";
+import Root from "./pages/root";
 import ErrorPage from "./utilities/error-page";
-import Home from "./routes/home/Home";
+import Home from "./pages/Home";
 
 import "./index.css";
+import "./scheme.css";
+import About from "./pages/about";
+import Projects from "./pages/projects";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -29,16 +33,20 @@ const router = createBrowserRouter([
       },
       {
         path: "about",
-        element: <></>
+        element: <About />
       },
       {
         path: "projects",
-        element: <></>
+        element: <Projects />
       }, 
       {
         path: "blog",
         element: <></>
       }, 
+      {
+        path: "login",
+        element: <></>
+      }
     ],
   },
 ]);
