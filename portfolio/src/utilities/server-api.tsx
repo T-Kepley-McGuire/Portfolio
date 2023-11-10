@@ -1,5 +1,5 @@
 const API_BASE_URL: string =
-  process.env.BACKEND_URL || "http://localhost:5001";
+  process.env.REACT_APP_BACKEND_URL || "http://localhost:5001";
 
 const headers = new Headers();
 headers.append("Content-type", "application/json");

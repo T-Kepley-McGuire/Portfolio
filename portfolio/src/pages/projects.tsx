@@ -7,7 +7,8 @@ import { listProjects } from "../utilities/server-api";
 import { parseMarkdownWithYamlFrontmatter } from "../utilities/md-metadata-parser";
 import getMostVisible from "../utilities/get-most-visible";
 
-const BACKEND_URL: string = process.env.BACKEND_URL || "http://localhost:5001";
+const BACKEND_URL: string = process.env.REACT_APP_BACKEND_URL || "http://localhost:5001";
+//console.log("here", BACKEND_URL);
 
 export default function Projects(): JSX.Element {
   type MarkdownFrontmatter = {

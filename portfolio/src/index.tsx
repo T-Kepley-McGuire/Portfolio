@@ -5,8 +5,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
-import dotenv from "dotenv";
-import { resolve } from "path";
 
 import Root from "./pages/root";
 import ErrorPage from "./utilities/error-page";
