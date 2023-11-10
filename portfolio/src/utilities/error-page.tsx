@@ -3,14 +3,14 @@ import { isRouteErrorResponse, useRouteError } from "react-router-dom";
 
 export default function ErrorPage(): JSX.Element {
   const error = useRouteError();
-  let errorMessage: string;
+  let errorMessage: string | any;
 
   if (isRouteErrorResponse(error)) {
     // error is type `ErrorResponse`
-    if(error.error) {
-      errorMessage = error.error.message;
+    if(isRouteErrorResponse(error)) {
+      errorMessage = error.data.message;
     } else {
-      errorMessage = error.statusText;
+      errorMessage = error;
     }
     //errorMessage = error.error?.message || error.statusText;
   } else if (error instanceof Error) {
