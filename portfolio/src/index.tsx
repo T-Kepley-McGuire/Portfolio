@@ -14,6 +14,7 @@ import "./index.css";
 import "./scheme.css";
 import About from "./pages/about";
 import Projects from "./pages/projects";
+import Blog from "./pages/blog";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
       }, 
       {
         path: "blog",
-        element: <></>
+        element: <Blog />
       }, 
       {
         path: "login",

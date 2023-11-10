@@ -60,7 +60,7 @@
     position: absolute;
     content: "";
     width: 20px;
-    height: 1px;
+    height: 2px;
     background: var(--gray-100);
     transform: rotate(90deg);
   }
@@ -68,7 +68,7 @@
     position: absolute;
     content: "";
     width: 20px;
-    height: 1px;
+    height: 2px;
     background: var(--gray-100);
   }
 }
