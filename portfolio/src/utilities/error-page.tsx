@@ -7,7 +7,12 @@ export default function ErrorPage(): JSX.Element {
 
   if (isRouteErrorResponse(error)) {
     // error is type `ErrorResponse`
-    errorMessage = error.error?.message || error.statusText;
+    if(error.error) {
+      errorMessage = error.error.message;
+    } else {
+      errorMessage = error.statusText;
+    }
+    //errorMessage = error.error?.message || error.statusText;
   } else if (error instanceof Error) {
     errorMessage = error.message;
   } else if (typeof error === "string") {
