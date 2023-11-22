@@ -5,6 +5,7 @@ canvas {
 }
 
 .mouse-menu-container {
+    cursor:default;
     position: absolute;
 }
   
@@ -25,14 +26,16 @@ canvas {
     border-radius: 50%;
     color: black;
     transform: translate(-50%, -50%);
-
+    background-color: transparent;
     display: flex;
     justify-content: center;
     align-items: flex-end;
+
+    transition: all 0.5s ease 0s;
 }
 
 .mouse-menu-item > p {
-
+    user-select: none;
     color: black;  
 }
 

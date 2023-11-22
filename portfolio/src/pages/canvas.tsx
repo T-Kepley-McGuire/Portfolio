@@ -52,8 +52,6 @@ function Canvas() {
     height: number
   ) => {
     //ctx.clearRect(0, 0, width, height);
-
-    ctx.strokeStyle = "white";
     ctx.lineWidth = 1;
     //ctx.filter = "opacity(50%)";
 
@@ -66,8 +64,8 @@ function Canvas() {
         mousePos.current[mousePos.current.length - 1].x,
         mousePos.current[mousePos.current.length - 1].y
       );
+      ctx.stroke();
     }
-    ctx.stroke();
   };
 
   // const draw = (
@@ -141,9 +139,16 @@ function Canvas() {
     //console.log(menuRef.current);
   };
 
+  const menuItems = [
+    { label: "erase", function: () => console.log("erase") },
+    { label: "color", function: () => console.log("color") },
+    { label: "fill", function: () => console.log("fill") },
+    { label: "air", function: () => console.log("air") },
+  ];
+
   return (
     <main>
-      <FollowMouse />
+      {/* <FollowMouse menuLabelsAndFunctions={menuItems}/> */}
       <AnimationCanvas
         dimensions={{ width: window.innerWidth, height: window.innerHeight }}
         draw={draw}
