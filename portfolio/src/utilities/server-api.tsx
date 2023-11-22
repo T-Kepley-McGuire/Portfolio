@@ -37,3 +37,8 @@ export async function listProjects(signal: AbortSignal) {
     
     return await fetchJson(url, { headers, signal, method: "GET"}, []);
 }
+
+export async function listArticles(signal: AbortSignal) {
+  const url = new URL(`${API_BASE_URL}/blog`);
+  return await fetchJson(url, { headers, signal, method: "GET"}, []);
+}

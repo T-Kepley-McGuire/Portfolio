@@ -15,6 +15,7 @@ import "./scheme.css";
 import About from "./pages/about";
 import Projects from "./pages/projects";
 import Blog from "./pages/blog";
+import Canvas from "./pages/canvas";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <></>
+      },
+      {
+        path: "canvas",
+        element: <Canvas />
       }
     ],
   },

@@ -4,70 +4,37 @@ import rehypeRaw from "rehype-raw";
 
 import "../css/projects.css";
 import { listProjects } from "../utilities/server-api";
-import { parseMarkdownWithYamlFrontmatter } from "../utilities/md-metadata-parser";
 import getMostVisible from "../utilities/get-most-visible";
+import parseMarkdown, { MarkdownFrontmatter } from "../utilities/md-parser";
 
-const BACKEND_URL: string = process.env.REACT_APP_BACKEND_URL || "http://localhost:5001";
+const BACKEND_URL: string =
+  process.env.REACT_APP_BACKEND_URL || "http://localhost:5001";
 //console.log("here", BACKEND_URL);
 
 export default function Projects(): JSX.Element {
-  type MarkdownFrontmatter = {
-    title?: string;
-    timestamp?: string;
-    data: string;
-  };
   const [markdownList, setMarkdownList] = useState(Array<MarkdownFrontmatter>);
   const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     const abortController = new AbortController();
-    listProjects(abortController.signal).then((result: Array<string>) => {
-      const metaData: Array<MarkdownFrontmatter> = [];
+    listProjects(abortController.signal)
+      .then((result: Array<string>) => {
+        const metaData: Array<MarkdownFrontmatter> = [];
 
-      result.forEach((mdFile) => {
-        const parsed =
-          parseMarkdownWithYamlFrontmatter<MarkdownFrontmatter>(mdFile);
-        metaData.push(parsed);
+        result.forEach((mdFile) => {
+          metaData.push(parseMarkdown(mdFile));
+        });
+
+        metaData.sort((a: MarkdownFrontmatter, b: MarkdownFrontmatter) => {
+          return Number(b.timestamp) - Number(a.timestamp);
+        });
+
+        setMarkdownList(metaData);
+        setActiveSection(metaData[0].title || "");
+      })
+      .catch((error) => {
+        console.log("no projects");
       });
-
-      metaData.forEach((md: MarkdownFrontmatter) => {
-        const backendUrl = `${BACKEND_URL}/images`;
-        const imageRegex = /!\[(.*?)\]\((.*?)\)/g;
-        md.data = md.data.replace(
-          imageRegex,
-          (match: string, altText: string, imageUrl: string): string => {
-            const absoluteUrl = `${backendUrl}${imageUrl}`;
-
-            return `<div class="captioned-image">
-                    <p>${altText}</p>
-                    <img src=${absoluteUrl} alt=${altText} />
-                  </div>`;
-            //return `![${altText}](${absoluteUrl})`;
-          }
-        );
-
-        const codeRegex = /```(.*?)\n((.|\n)*?)```/gs;
-        md.data = md.data.replace(
-          codeRegex,
-          (match: string, language: string, code: string): string => {
-            return `${language ? `<div class="code-header">
-                      <p>Language: ${language}</p>
-                    </div>` : ""}
-                    <div class="code-block">
-                      <pre><code>${code}</code></pre>
-                    </div>`;
-          }
-        );
-        //console.log(md.data);
-      });
-
-      metaData.sort((a: MarkdownFrontmatter, b: MarkdownFrontmatter) => {
-        return Number(b.timestamp) - Number(a.timestamp);
-      });
-
-      setMarkdownList(metaData);
-      setActiveSection(metaData[0].title || "");
-    });
   }, []);
 
   useEffect(() => {
@@ -90,6 +57,7 @@ export default function Projects(): JSX.Element {
       <div className="sidebar">
         <p className="sidebar-title">Projects: </p>
         {markdownList.map((md: MarkdownFrontmatter) => {
+          console.log(md.content);
           return (
             <a
               key={md.title}
@@ -102,9 +70,10 @@ export default function Projects(): JSX.Element {
         })}
       </div>
       {markdownList.map((md: MarkdownFrontmatter) => (
-        <div className="article" id={md.title} key={md.title}>
-          <Markdown rehypePlugins={[[rehypeRaw]]}>{md.data}</Markdown>
-        </div>
+          <div className="article" id={md.title} key={md.title}>
+            <Markdown rehypePlugins={[[rehypeRaw]]}>{md.content}</Markdown>
+          <hr />
+          </div>
       ))}
     </main>
   );

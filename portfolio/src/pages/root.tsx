@@ -31,9 +31,9 @@ export default function Root(): JSX.Element {
       icon: "login",
     },
     {
-      link: "settings",
-      option: "settings",
-      icon: "settings",
+      link: "canvas",
+      option: "canvas",
+      icon: "lightbulb",
     },
   ];
 

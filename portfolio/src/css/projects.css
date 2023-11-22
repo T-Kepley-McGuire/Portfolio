@@ -25,7 +25,7 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    background-color: var(--main-color-80);
+    background-color: var(--main-color-20);
     border: 1px solid var(--main-color-50);
     border-radius: 5px;
 }
@@ -45,8 +45,8 @@
 .code-block {
     padding: 10px;
     border-radius: 0 0 5px 5px;
-    background-color: var(--main-color-30);
-    color: var(--gray-80);
+    background-color: var(--main-color-60);
+    color: var(--gray-10);
 }
 
 .code-header {
@@ -56,10 +56,12 @@
     padding: 10px;
     border-radius: 5px 5px 0 0;
     background-color: var(--main-color-80);
-    border-bottom: solid var(--main-color-30) 1px;
+    border-bottom: solid var(--main-color-20) 1px;
 }
 
 .code-header > p {
+    color: var(--gray-10);
+    font-weight: 400;
     font-size: medium;
     margin: 0px;
 }

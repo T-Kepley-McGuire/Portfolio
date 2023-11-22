@@ -9,7 +9,7 @@ The Mandelbrot Set Rendering Engine is a web-based application I developed. This
 
 ![The Mandelbrot set fully zoomed out. The complex axis is rendered vertically and the origin is on the right where the two halves of the main cardioid meet](/mandelbrot-full-size.png)
 
-The Mandelbrot Set's unparalleled intrigue lies in its utter lack of self-similarity as one delves into its intricate fringes. Unlike many other fractals, where patterns repeat on various scales, the Mandelbrot Set presents an ever-changing, infinitely complex terrain. As you zoom deeper, new structures emerge that bear no resemblance to the larger set, forming a mesmerizing tapestry of shapes, colors, and intricacies. This absence of repetitive motifs challenges our conventional understanding of geometry and mathematics, offering a profound glimpse into the boundless complexity of the natural world. The set's ability to constantly surprise and astonish, revealing new, uncharted realms with each level of magnification, underscores its enduring fascination for mathematicians, scientists, and enthusiasts alike. 
+The Mandelbrot Set's unparalleled intrigue lies in its utter lack of self-similarity as one delves into its complex edges. Unlike many other fractals, where patterns repeat on various scales, the Mandelbrot Set has no true self similarity on different scales. As you zoom deeper, new structures emerge that each have their own form and structure, creating a mesmerizing tapestry of shapes, colors, and intricacies. Oddly, the original Mandelbrot set shape continues to reappear at deeper and deeper zooms, a motif of mystery that confounds orthodox mathematics. 
 
 #### How it Works:
 
@@ -46,7 +46,13 @@ Incorporating advanced techniques, the rendering engine leverages GPU rendering 
 
 The various optimizations drastically change the render time for each image of the set. While it can be difficult to quantify the realized difference because of hardware differences and a general lack uniformity in render times between various portions of the set, by applying the optimizations listed above, the render time can be taken from many 10s of seconds per image to less than 5 seconds per image on average PC hardware. 
 
+*Challenges*
+
+The most limiting factor in plotting the Mandelbrot set is the speed of the hardware. At low levels of zoom, floating point arithmetic is used. This capitalizes on computers exteme speed with hardware-integrated techniques. At higher zooms this is not possible due to floating point error. Once the distance between two pixels increases beyond a computer's ability to natively represent, the calculation can no longer distinguish between the two pixels. This leads to pixelization at higher zooms that cannot be surmounted without abstracting away from hardware floating point arithmetic. Virtual representations of numbers can be used in this case, but the reduction in calculation speed is crippling for anyone with a life. This project does not use virtual representations of numbers and so is limited to about 16,000x zoom while still rendering the set with any level of fidelity.
+
 #### Technology Used:
 
 The application is implemented in HTML, JavaScript, and WebGPU Shading Language (WGSL). Bootstrap is utilized for styling, and communication with the GPU is facilitated through the WebGPU API.
+
+#### <a href="https://t-kepley-mcguire.github.io/Mandelbrot-Web-App/" target="_blank">Visit Site</a>
 

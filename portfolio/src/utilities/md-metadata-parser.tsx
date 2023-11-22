@@ -1,16 +1,16 @@
 /**
  * Represents a parsed Markdown document with YAML frontmatter, where metadata properties are optional.
  *
- * @property {string} data - The main content of the Markdown document excluding YAML frontmatter.
+ * @property {string} content - The main content of the Markdown document excluding YAML frontmatter.
  * @property {T} [key: string]: string | undefined - Optional metadata properties parsed from the YAML frontmatter.
- * 
+ *
  * This generic type allows for parsing Markdown documents with YAML frontmatter.
  * The `data` property contains the main content of the Markdown document.
  * Metadata properties can vary and are optional, based on the provided generic type `T`.
  * If metadata properties are present in the frontmatter, they are included as optional properties of the type.
  */
 type MarkdownWithYamlFrontmatter<T> = {
-  data: string;
+  content: string;
 } & {
   [K in keyof T]?: string;
 };
@@ -25,31 +25,10 @@ type MarkdownWithYamlFrontmatter<T> = {
  * The function uses regular expressions to identify and parse the YAML frontmatter section, extracting metadata key-value pairs.
  * If metadata properties are found, they are included in the returned object.
  * If no valid YAML frontmatter is present, the function includes the entire input Markdown content in the 'data' property.
- *
- * @example
- * const markdownContent = `
- * ---
- * title: "Sample Document"
- * author: "John Doe"
- * date: "2023-11-03"
- * description: "An example document with metadata."
- * tags:
- *   - "Markdown"
- *   - "YAML"
- * ---
- *
- * # Content starts here
- * `;
- *
- * const parsedMarkdown = parseMarkdownWithYamlFrontmatter(markdownContent);
- * console.log(parsedMarkdown.title); // Outputs: "Sample Document" (if 'title' is present in the frontmatter)
- * console.log(parsedMarkdown.data); // Outputs: "# Content starts here"
  */
-export const parseMarkdownWithYamlFrontmatter = <
+export default function parseMarkdownWithYamlFrontmatter2<
   T extends Record<string, string>
->(
-  markdown: string
-): MarkdownWithYamlFrontmatter<T> => {
+>(markdown: string): MarkdownWithYamlFrontmatter<T> {
   const metaRegExp = new RegExp(/^---[\n\r](((?!---).|[\n\r])*)[\n\r]---$/m);
 
   // "rawYamlHeader" is the full matching string, including the --- and ---
@@ -57,7 +36,7 @@ export const parseMarkdownWithYamlFrontmatter = <
   const [rawYamlHeader, yamlVariables] = metaRegExp.exec(markdown) ?? [];
 
   if (!rawYamlHeader || !yamlVariables) {
-    return { data: markdown };
+    return { content: markdown };
   }
 
   const keyValues = yamlVariables.split("\n");
@@ -71,5 +50,8 @@ export const parseMarkdownWithYamlFrontmatter = <
     })
   ) as Record<keyof T, string>;
 
-  return { ...frontmatter, data: markdown.replace(rawYamlHeader, "").trim() };
-};
+  return {
+    ...frontmatter,
+    content: markdown.replace(rawYamlHeader, "").trim(),
+  };
+}

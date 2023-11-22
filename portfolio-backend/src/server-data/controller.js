@@ -38,7 +38,14 @@ function readProjects(req, res, next) {
   });
 }
 
+function readBlog(req, res, next) {
+  readFolder("src/articles/blog/").then((files) => {
+    res.json({ data: files });
+  })
+}
+
 module.exports = {
   readAbout,
   readProjects,
+  readBlog
 };

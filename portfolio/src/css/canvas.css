@@ -1,0 +1,41 @@
+canvas {
+    position: absolute;
+    top: 0;
+    z-index: -1;
+}
+
+.mouse-menu-container {
+    position: absolute;
+}
+  
+
+.circle {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    border-radius: 50px;
+    transform: translate(-50%, -50%);
+}
+
+.mouse-menu-item {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    color: black;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.mouse-menu-item > p {
+
+    color: black;  
+}
+
+.highlight {
+    background-color: white;
+}
