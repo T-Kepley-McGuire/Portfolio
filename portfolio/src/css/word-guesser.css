@@ -1,0 +1,98 @@
+.word-row {
+  display: flex;
+  flex-direction: row;
+  width: 200px;
+  justify-content: space-around;
+  padding: 10px 2px;
+  border-radius: 5px;
+  transition: background-color 0.75s ease;
+}
+
+.current-row {
+  background-color: var(--gray-40);
+}
+
+.error {
+  background-color: darkred;
+  transition: background-color 0s;
+}
+
+.letter {
+  background-color: var(--gray-30);
+  border: 0px solid white;
+  border-radius: 5px;
+  width: 33px;
+  color: white;
+  text-align: center;
+  padding: 5px 0px;
+  font-size: x-large;
+  font-family: "Raleway", sans-serif;
+  font-weight: 200;
+}
+
+.letter:focus {
+  background-color: var(--gray-50);
+}
+
+.word-submit {
+  border: 0px solid white;
+  border-radius: 5px;
+  font-family: "Raleway", sans-serif;
+  padding: 2px;
+  background-color: var(--accent-color-30);
+  color: var(--gray-90);
+  transition: all 0.5s ease;
+  display: none;
+}
+.word-submit:hover {
+  background-color: var(--accent-color-40);
+  cursor: pointer;
+}
+
+.form-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  width: 150px;
+  border: 0px solid white;
+  border-radius: 5px;
+  font-family: "Raleway", sans-serif;
+  font-weight: 300;
+  font-size: x-large;
+  background-color: var(--accent-color-30);
+  color: var(--gray-90);
+  transition: all 0.5s ease;
+}
+
+i {
+    margin-right: 5px;
+}
+
+.form-button:hover {
+  background-color: var(--accent-color-40);
+  cursor: pointer;
+}
+
+.correct {
+  background-color: var(--accent-color-40);
+}
+
+.partially-correct {
+  background-color: var(--main-color-40);
+}
+
+.submitted {
+  transform: rotateX(180deg) scaleY(-1);
+  transition: all 0s ease 0s;
+}
+
+.copy-message {
+    opacity: 100%;
+    transition: all 0s ease;
+}
+
+.copy-message-hidden {
+    opacity: 0%;
+    transition: all 0.75s ease;
+}

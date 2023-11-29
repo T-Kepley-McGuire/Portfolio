@@ -16,6 +16,7 @@ import About from "./pages/about";
 import Projects from "./pages/projects";
 import Blog from "./pages/blog";
 import Canvas from "./pages/canvas";
+import WordGuesser from "./pages/word-guesser";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "canvas",
         element: <Canvas />
+      },
+      {
+        path: "wordguesser",
+        element: <WordGuesser />
       }
     ],
   },

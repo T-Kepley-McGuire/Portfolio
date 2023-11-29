@@ -26,9 +26,9 @@ export default function Root(): JSX.Element {
       icon: "article",
     },
     {
-      link: "login",
-      option: "login",
-      icon: "login",
+      link: "wordguesser",
+      option: "words",
+      icon: "spellcheck",
     },
     {
       link: "canvas",
