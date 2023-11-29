@@ -88,12 +88,6 @@ export default function WordGuesser(): JSX.Element {
 
       const beginningLine = document.getElementById(`${currentWorkingLine} 0`);
       beginningLine?.focus();
-      // } else if (!wordList.includes(words[wordIndex].join("").toLowerCase())) {
-      //     console.log("not a word", words[wordIndex].join("").toLowerCase());
-      //     setWordError(true);
-      //     setTimeout(() => {
-      //         setWordError(false);
-      //     }, 200);
     } else {
       setSubmitted((currentlySubmitted) => {
         const newSubmitted = [...currentlySubmitted];

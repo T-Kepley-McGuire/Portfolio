@@ -26,6 +26,7 @@
   z-index: -1;
   position: absolute;
   transition: height 0.6s ease;
+  border-radius: 0px 0px 5px 5px;
 }
 
 .menu-back-2.expanded {
@@ -148,7 +149,7 @@
   text-align: left;
   color: var(--gray-100);
   padding: 0px;
-  padding-left: 10px;
+  padding-left: 5px;
 }
 
 .menu-link > p {
