@@ -6,9 +6,12 @@ import text from "../utilities/words";
 import "../css/word-guesser.css";
 
 function useQuery() {
-  const loc = useLocation();
+  const location = useLocation();
 
-  return React.useMemo(() => new URLSearchParams(loc.search), [loc.search]);
+  return React.useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  );
 }
 
 export default function WordGuesser(): JSX.Element {
@@ -20,15 +23,19 @@ export default function WordGuesser(): JSX.Element {
     ["", "", "", "", ""],
     ["", "", "", "", ""],
     ["", "", "", "", ""],
+    ["", "", "", "", ""],
   ];
-
-  const [theWord, setTheWord] = useState(["L", "E", "A", "R", "N"]);
-  const [seed, setSeed] = useState(Math.floor(Math.random() * 1379));
   const wordList = text.split("\n");
-
-  useEffect(() => {
-    setTheWord(wordList[seed].toUpperCase().split(""));
-  }, [seed]);
+  const [theWord, setTheWord] = useState(["L", "E", "A", "R", "N"]);
+  const [seed, setSeed] = useState(Math.floor(Math.random() * wordList.length));
+  const [words, setWords] = useState(init);
+  const [currentWorkingLine, setCurrentWorkingLine] = useState(0);
+  const [currentWorkingLetter, setCurrentWorkingLetter] = useState(0);
+  const [submitted, setSubmitted] = useState(init.map((i) => false));
+  const [correct, setCorrect] = useState(init.map((i) => i.map((l) => -1)));
+  const [wordError, setWordError] = useState(false);
+  const [successful, setSuccessful] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const tempSeed =
@@ -36,41 +43,57 @@ export default function WordGuesser(): JSX.Element {
     setSeed(tempSeed);
   }, []);
 
-  const [words, setWords] = useState(init);
-  const [currentWorkingLine, setCurrentWorkingLine] = useState(0);
-  const [submitted, setSubmitted] = useState(init.map((i) => false));
-  const [correct, setCorrect] = useState(init.map((i) => i.map((l) => -1)));
+  useEffect(() => {
+    setCurrentWorkingLetter(0);
+  }, [currentWorkingLine]);
 
-  const [wordError, setWordError] = useState(false);
-  const [successful, setSuccessful] = useState(false);
+  useEffect(() => {
+    const newLetter = document.getElementById(
+      `${currentWorkingLine} ${currentWorkingLetter}`
+    );
+    newLetter?.focus();
+    if (newLetter instanceof HTMLInputElement) {
+      newLetter.select();
+    }
+  }, [currentWorkingLetter]);
 
-  const [copied, setCopied] = useState(false);
+  useEffect(() => {
+    setTheWord(wordList[seed].toUpperCase().split(""));
+  }, [seed]);
 
   const handleChange = ({ target }: { target: HTMLInputElement }) => {
     const [wordIndex, letterIndex] = target.id.split(" ");
+
     setWords((wordList) => {
       const newWords = [...wordList];
-      if (wordIndex && letterIndex) {
-        newWords[Number(wordIndex)][Number(letterIndex)] =
-          target.value.toUpperCase();
-      }
+      newWords[Number(wordIndex)][Number(letterIndex)] =
+        target.value.toUpperCase();
       return newWords;
     });
 
-    if (target.value === "" && Number(letterIndex) > 0) {
-      const next = document.getElementById(
-        `${wordIndex} ${Number(letterIndex) - 1}`
-      );
-      next?.focus();
-    } else if (target.value !== "" && Number(letterIndex) < 4) {
-      const next = document.getElementById(
-        `${wordIndex} ${Number(letterIndex) + 1}`
-      );
-      next?.focus();
+    if (target.value !== "") handleMove(1);
+  };
+
+  const handleBackspace = () => {
+    setWords((wordList) => {
+      const newWords = [...wordList];
+      newWords[currentWorkingLine][currentWorkingLetter] = "";
+      return newWords;
+    });
+    handleMove(-1);
+  };
+
+  const handleMove = (delta: number) => {
+    if (delta < 0 && currentWorkingLetter > 0) {
+      setCurrentWorkingLetter(currentWorkingLetter - 1);
+    }
+    if (delta > 0 && currentWorkingLetter < words[0].length - 1) {
+      setCurrentWorkingLetter(currentWorkingLetter + 1);
     }
   };
 
   const handleFocus = ({ target }: { target: HTMLInputElement }) => {
+    setCurrentWorkingLetter(Number(target.id.split(" ")[1]));
     target.select();
   };
 
@@ -78,41 +101,35 @@ export default function WordGuesser(): JSX.Element {
     event.preventDefault();
 
     if (
-      words[wordIndex].join("").length < 5 ||
-      !wordList.includes(words[wordIndex].join("").toLowerCase())
+      words[currentWorkingLine].join("").length < 5 ||
+      !wordList.includes(words[currentWorkingLine].join("").toLowerCase())
     ) {
-      setWordError(true);
-      setTimeout(() => {
-        setWordError(false);
-      }, 200);
-
-      const beginningLine = document.getElementById(`${currentWorkingLine} 0`);
-      beginningLine?.focus();
+      submissionError();
     } else {
       setSubmitted((currentlySubmitted) => {
         const newSubmitted = [...currentlySubmitted];
-        newSubmitted[wordIndex] = true;
+        newSubmitted[currentWorkingLine] = true;
         return newSubmitted;
       });
-      setCurrentWorkingLine(currentWorkingLine + 1);
 
-      words[wordIndex].forEach((letter, letterIndex) => {
+      words[currentWorkingLine].forEach((letter, letterIndex) => {
         if (letter === theWord[letterIndex]) {
           setCorrect((currntlyCorrect) => {
             const newCorrect = [...currntlyCorrect];
-            newCorrect[wordIndex][letterIndex] = 1;
+            newCorrect[currentWorkingLine][letterIndex] = 1;
             return newCorrect;
           });
         } else if (theWord.includes(letter)) {
           setCorrect((currntlyCorrect) => {
             const newCorrect = [...currntlyCorrect];
-            newCorrect[wordIndex][letterIndex] = 0;
+            newCorrect[currentWorkingLine][letterIndex] = 0;
             return newCorrect;
           });
         }
       });
+      setCurrentWorkingLine(currentWorkingLine + 1);
 
-      if (words[wordIndex].join("") === theWord.join("")) {
+      if (words[currentWorkingLine].join("") === theWord.join("")) {
         setSuccessful(true);
       }
     }
@@ -123,14 +140,18 @@ export default function WordGuesser(): JSX.Element {
     setSubmitted(init.map((i) => false));
     setCorrect(init.map((i) => i.map((l) => -1)));
     setWords(init);
-
-    setSeed(Math.floor(Math.random() * 1379));
+    setSuccessful(false);
+    setSeed(Math.floor(Math.random() * wordList.length));
   };
 
-  useEffect(() => {
-    const newLine = document.getElementById(`${currentWorkingLine} 0`);
-    newLine?.focus();
-  }, [currentWorkingLine]);
+  function submissionError() {
+    setWordError(true);
+    setTimeout(() => {
+      setWordError(false);
+    }, 200);
+
+    setCurrentWorkingLetter(0);
+  }
 
   function copy() {
     const val = window.location.href;
@@ -172,7 +193,12 @@ export default function WordGuesser(): JSX.Element {
               return (
                 <input
                   onKeyUp={(e) => {
-                    if (e.key === "enter") handleSubmit(e, wordIndex);
+                    if (e.key === "Enter") handleSubmit(e, wordIndex);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "ArrowRight") handleMove(1);
+                    if (e.key === "ArrowLeft") handleMove(-1);
+                    if (e.key === "Backspace") handleBackspace();
                   }}
                   disabled={currentWorkingLine !== wordIndex}
                   onFocus={handleFocus}
@@ -196,9 +222,6 @@ export default function WordGuesser(): JSX.Element {
                 ></input>
               );
             })}
-            <button className="word-submit" type="submit">
-              GO
-            </button>
           </form>
         );
       })}
