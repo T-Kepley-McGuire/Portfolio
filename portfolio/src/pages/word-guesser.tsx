@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import text from "../utilities/words";
 
 import "../css/word-guesser.css";
+import JSConfetti from "js-confetti";
 
 function useQuery() {
   const location = useLocation();
@@ -17,6 +18,9 @@ function useQuery() {
 export default function WordGuesser(): JSX.Element {
   let query = useQuery();
 
+  
+  const jsConfetti = new JSConfetti();
+
   const init = [
     ["", "", "", "", ""],
     ["", "", "", "", ""],
@@ -26,8 +30,8 @@ export default function WordGuesser(): JSX.Element {
     ["", "", "", "", ""],
   ];
   const wordList = text.split("\n");
-  const [theWord, setTheWord] = useState(["L", "E", "A", "R", "N"]);
-  const [seed, setSeed] = useState(Math.floor(Math.random() * wordList.length));
+  const [theWord, setTheWord] = useState(Array<string>);
+  const [seed, setSeed] = useState(Number);
   const [words, setWords] = useState(init);
   const [currentWorkingLine, setCurrentWorkingLine] = useState(0);
   const [currentWorkingLetter, setCurrentWorkingLetter] = useState(0);
@@ -60,6 +64,15 @@ export default function WordGuesser(): JSX.Element {
   useEffect(() => {
     setTheWord(wordList[seed].toUpperCase().split(""));
   }, [seed]);
+
+  useEffect(() => {
+    if (successful) {
+      jsConfetti.addConfetti({confettiColors: [
+        '#180D6E', '#4298ED', '#40FFB3', '#3BCEAC', '#0EAD69'
+      ]}
+    );
+    }
+  }, [successful]);
 
   const handleChange = ({ target }: { target: HTMLInputElement }) => {
     const [wordIndex, letterIndex] = target.id.split(" ");
@@ -180,7 +193,7 @@ export default function WordGuesser(): JSX.Element {
           <form
             onSubmit={(event) => handleSubmit(event, wordIndex)}
             className={`word-row ${
-              wordIndex === currentWorkingLine
+              wordIndex === currentWorkingLine && !successful
                 ? wordError
                   ? "error"
                   : "current-row"
@@ -200,7 +213,7 @@ export default function WordGuesser(): JSX.Element {
                     if (e.key === "ArrowLeft") handleMove(-1);
                     if (e.key === "Backspace") handleBackspace();
                   }}
-                  disabled={currentWorkingLine !== wordIndex}
+                  disabled={currentWorkingLine !== wordIndex || successful}
                   onFocus={handleFocus}
                   className={`letter ${
                     correct[wordIndex][letterIndex] === 1
