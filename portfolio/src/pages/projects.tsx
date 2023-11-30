@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 
@@ -7,8 +7,8 @@ import { listProjects } from "../utilities/server-api";
 import getMostVisible from "../utilities/get-most-visible";
 import parseMarkdown, { MarkdownFrontmatter } from "../utilities/md-parser";
 
-const BACKEND_URL: string =
-  process.env.REACT_APP_BACKEND_URL || "http://localhost:5001";
+// const BACKEND_URL: string =
+//   process.env.REACT_APP_BACKEND_URL || "http://localhost:5001";
 //console.log("here", BACKEND_URL);
 
 export default function Projects(): JSX.Element {

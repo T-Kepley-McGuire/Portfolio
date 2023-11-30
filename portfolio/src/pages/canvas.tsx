@@ -1,9 +1,7 @@
-import { resourceUsage } from "process";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import "../css/canvas.css";
 import AnimationCanvas from "../components/AnimationCanvas";
-import FollowMouse from "../components/FollowMouse";
 
 function Canvas() {
   const none = { x: 0, y: 0 };
@@ -11,14 +9,10 @@ function Canvas() {
   for (let i = 0; i < 50; i++) {
     init.push(none);
   }
-  const initKeys: { [index: string]: boolean } = {};
-  const initStyle: { [index: string]: string } = {};
+
   const mousePos = useRef([...init]);
   const currentPos = useRef({ ...none });
   const mouseDown = useRef(false);
-
-
-  const menuRef = useRef(null);
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
@@ -47,9 +41,7 @@ function Canvas() {
 
   
   const draw = (
-    ctx: CanvasRenderingContext2D,
-    width: number,
-    height: number
+    ctx: CanvasRenderingContext2D
   ) => {
     //ctx.clearRect(0, 0, width, height);
     ctx.lineWidth = 1;
@@ -139,12 +131,12 @@ function Canvas() {
     //console.log(menuRef.current);
   };
 
-  const menuItems = [
-    { label: "erase", function: () => console.log("erase") },
-    { label: "color", function: () => console.log("color") },
-    { label: "fill", function: () => console.log("fill") },
-    { label: "air", function: () => console.log("air") },
-  ];
+  // const menuItems = [
+  //   { label: "erase", function: () => console.log("erase") },
+  //   { label: "color", function: () => console.log("color") },
+  //   { label: "fill", function: () => console.log("fill") },
+  //   { label: "air", function: () => console.log("air") },
+  // ];
 
   return (
     <main>

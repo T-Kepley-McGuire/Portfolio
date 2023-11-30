@@ -12,8 +12,8 @@ interface FollowMouseProperties {
 
 export default function FollowMouse(props: FollowMouseProperties) {
   const {
-    keyPressFunctionalities = {},
-    style = {},
+    // keyPressFunctionalities = {},
+    // style = {},
     menuLabelsAndFunctions = [],
   } = props;
   const [cursorPosition, setCursorPosition] = useState({ top: 0, left: 0 });

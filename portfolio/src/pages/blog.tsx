@@ -1,11 +1,9 @@
-import { resourceUsage } from "process";
-import React, { JSXElementConstructor, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "../css/blog.css";
 import parseMarkdown, { MarkdownFrontmatter } from "../utilities/md-parser";
 import { listArticles } from "../utilities/server-api";
 import Markdown from "react-markdown";
-import AnimationCanvas from "../components/AnimationCanvas";
 
 function Blog() {
 
@@ -26,7 +24,7 @@ function Blog() {
 
       setMarkdownList(metaData);
 
-    }).catch((error) => {
+    }).catch(() => {
       console.log("no articles")
     })
   }, []);
