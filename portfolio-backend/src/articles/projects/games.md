@@ -5,22 +5,8 @@ timestamp: 1698948603332
 
 ### Games
 
-These are all my games. I'm very proud of them. Pls like them.
+This is coming soon...
 
-I've spent many hours on each and i love support <3
+I work on unity for PC projects, so I currently do not have any live demos of my projects. Maybe this will change in the future. 
 
-I'm filling
-
-many paragraphs
-
-with pointless
-
-text
-
-I like oil and vinegar salad
-
-dressings
-
-and
-
-very long hikes
+Hope you enjoy the rest of my website. Consider checking out my other projects in the menu tab
