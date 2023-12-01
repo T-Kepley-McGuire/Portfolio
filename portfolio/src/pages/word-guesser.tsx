@@ -16,9 +16,7 @@ function useQuery() {
 }
 
 export default function WordGuesser(): JSX.Element {
-  let query = useQuery();
-
-  
+  const query = useQuery();
   const jsConfetti = new JSConfetti();
 
   const init = [
@@ -38,17 +36,22 @@ export default function WordGuesser(): JSX.Element {
   const [submitted, setSubmitted] = useState(init.map((i) => false));
   const [correct, setCorrect] = useState(init.map((i) => i.map((l) => -1)));
   const [wordError, setWordError] = useState(false);
-  const [successful, setSuccessful] = useState(false);
+  const [successful, setSuccessful] = useState(0);
+  const [streak, setStreak] = useState(0);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const tempSeed =
-      Number(query.get("seed")) || Math.floor(Math.random() * 1379);
+      Number(query.get("seed")) || Math.floor(Math.random() * wordList.length);
     setSeed(tempSeed);
   }, []);
 
   useEffect(() => {
     setCurrentWorkingLetter(0);
+
+    if(currentWorkingLine >= init.length) {
+      setSuccessful(-1);
+    }
   }, [currentWorkingLine]);
 
   useEffect(() => {
@@ -66,17 +69,18 @@ export default function WordGuesser(): JSX.Element {
   }, [seed]);
 
   useEffect(() => {
-    if (successful) {
-      jsConfetti.addConfetti({confettiColors: [
-        '#180D6E', '#4298ED', '#40FFB3', '#3BCEAC', '#0EAD69'
-      ]}
-    );
+    if (successful > 0) {
+      setStreak(streak + 1);
+      jsConfetti.addConfetti({
+        confettiColors: ["#180D6E", "#4298ED", "#40FFB3", "#3BCEAC", "#0EAD69"],
+      });
+    } else if (successful < 0) {
+      setStreak(0);
     }
   }, [successful]);
 
   const handleChange = ({ target }: { target: HTMLInputElement }) => {
     const [wordIndex, letterIndex] = target.id.split(" ");
-
     setWords((wordList) => {
       const newWords = [...wordList];
       newWords[Number(wordIndex)][Number(letterIndex)] =
@@ -93,7 +97,9 @@ export default function WordGuesser(): JSX.Element {
       newWords[currentWorkingLine][currentWorkingLetter] = "";
       return newWords;
     });
-    handleMove(-1);
+    if(currentWorkingLetter > 0) {
+      setCurrentWorkingLetter(currentWorkingLetter - 1);
+    }
   };
 
   const handleMove = (delta: number) => {
@@ -140,11 +146,11 @@ export default function WordGuesser(): JSX.Element {
           });
         }
       });
-      setCurrentWorkingLine(currentWorkingLine + 1);
-
+      
       if (words[currentWorkingLine].join("") === theWord.join("")) {
-        setSuccessful(true);
+        setSuccessful(1);
       }
+      setCurrentWorkingLine(currentWorkingLine + 1);
     }
   };
 
@@ -153,7 +159,7 @@ export default function WordGuesser(): JSX.Element {
     setSubmitted(init.map((i) => false));
     setCorrect(init.map((i) => i.map((l) => -1)));
     setWords(init);
-    setSuccessful(false);
+    setSuccessful(0);
     setSeed(Math.floor(Math.random() * wordList.length));
   };
 
@@ -179,21 +185,63 @@ export default function WordGuesser(): JSX.Element {
     }, 500);
   }
 
+  function decode(toDecode: string | null): number {
+    if (toDecode === null) return 0;
+    if (Number(toDecode) || Number(toDecode) === 0)
+      return Number(toDecode) % wordList.length;
+
+    let sum = 0;
+    for (let i = 0; i < toDecode.length; i++) {
+      const code: number = toDecode.charCodeAt(i);
+      sum += code;
+      sum %= wordList.length;
+    }
+
+    return sum;
+  }
+
+  function encode(toEncode: number): string {
+    let prepend = getRandomString(5);
+    while(decode(prepend) <= toEncode) {
+      if(toEncode - decode(prepend) > wordList.length) {
+        prepend += getRandomString(1);
+      } else {
+        prepend += String.fromCharCode(toEncode - decode(prepend));
+      }
+    }
+
+    return prepend;
+  }
+
+  const chars = "01234556789abcdefghijklmnopqrstuvwxyz"
+  function getRandomString(length: number): string {
+    if(length === 0) return "";
+    if(length === 1) return chars[Math.floor(Math.random() * chars.length)];
+    let result = "";
+    for(let i = 0; i < length; i++) {
+      result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return result;
+  }
+
   return (
     <main>
       <h3>
-        {successful
+        {successful > 0
           ? "Congratulations!"
-          : currentWorkingLine >= words.length
+          : successful < 0
           ? `The word was ${theWord.join("")}`
           : "Guess the word"}
       </h3>
+      <p>
+        Current streak: {streak}
+      </p>
       {init.map((word, wordIndex) => {
         return (
           <form
             onSubmit={(event) => handleSubmit(event, wordIndex)}
             className={`word-row ${
-              wordIndex === currentWorkingLine && !successful
+              wordIndex === currentWorkingLine && successful <= 0
                 ? wordError
                   ? "error"
                   : "current-row"
@@ -211,9 +259,9 @@ export default function WordGuesser(): JSX.Element {
                   onKeyDown={(e) => {
                     if (e.key === "ArrowRight") handleMove(1);
                     if (e.key === "ArrowLeft") handleMove(-1);
-                    if (e.key === "Backspace") handleBackspace();
+                    if (e.key === "Backspace" && letter === "") handleBackspace();
                   }}
-                  disabled={currentWorkingLine !== wordIndex || successful}
+                  disabled={currentWorkingLine !== wordIndex || successful !== 0}
                   onFocus={handleFocus}
                   className={`letter ${
                     correct[wordIndex][letterIndex] === 1
@@ -238,11 +286,16 @@ export default function WordGuesser(): JSX.Element {
           </form>
         );
       })}
-      <button className="form-button" onClick={handleReset}>
-        Reset
-      </button>
       <button className="form-button" onClick={copy}>
-        <i className="material-icons">share</i> Share
+        <i className="material-icons">upload</i> Share
+      </button>
+      <button
+        className={`form-button ${
+          successful !== 0 ? "" : "hidden"
+        }`}
+        onClick={handleReset}
+      >
+        <i className="material-icons">{successful < 0 ? "chevron_left" : "chevron_right"}</i>{successful < 0 ? "Reset" : "Next"}
       </button>
       <p className={copied ? "copy-message" : "copy-message-hidden"}>
         Copied URL to clipboard

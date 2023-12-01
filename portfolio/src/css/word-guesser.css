@@ -62,7 +62,9 @@
   font-size: x-large;
   background-color: var(--accent-color-30);
   color: var(--gray-90);
+  opacity: 100%;
   transition: all 0.5s ease;
+  
 }
 
 i {
@@ -95,4 +97,9 @@ i {
 .copy-message-hidden {
     opacity: 0%;
     transition: all 0.75s ease;
+}
+
+.hidden {
+  transform: translateY(-50px);
+  opacity: 0%;
 }

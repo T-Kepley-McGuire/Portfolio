@@ -881,7 +881,6 @@ tasks
 seams
 coral
 focus
-naked
 puppy
 jumps
 spoil
@@ -1977,7 +1976,6 @@ strut
 sloop
 prowl
 roach
-cocks
 bland
 dials
 plume
@@ -2034,7 +2032,6 @@ hoist
 fades
 vicar
 acorn
-pussy
 gruff
 musty
 tarts
@@ -2232,7 +2229,6 @@ goody
 gazes
 dowel
 calms
-bitch
 scowl
 gulps
 coded
@@ -3010,7 +3006,6 @@ pawns
 tamer
 poach
 baits
-damns
 gumbo
 daunt
 prank
@@ -3357,7 +3352,6 @@ alpha
 overt
 kinda
 spelt
-prick
 nobly
 ephod
 audio
@@ -3490,7 +3484,6 @@ swash
 aleph
 tinny
 itchy
-wanta
 trice
 jowls
 gongs
@@ -3512,10 +3505,8 @@ mebbe
 tacit
 greek
 xenon
-hullo
 pique
 roger
-negro
 hadst
 gecko
 beget
@@ -3546,7 +3537,6 @@ aleck
 natal
 clomp
 gored
-siree
 bandy
 gunny
 runic
@@ -3556,8 +3546,6 @@ fated
 wiper
 bards
 briny
-staid
-hocks
 ochre
 yummy
 gents
@@ -3572,7 +3560,6 @@ ebbed
 breve
 theta
 deems
-dykes
 servo
 telly
 tabby
@@ -3590,12 +3577,10 @@ comer
 borer
 sired
 privy
-mammy
 deary
 gyros
 sprit
 conga
-quire
 thugs
 furor
 bloke
@@ -3612,7 +3597,6 @@ stein
 jello
 audit
 echos
-fagot
 letup
 eyrie
 fount
@@ -3701,12 +3685,10 @@ bulgy
 metre
 lusts
 unary
-goeth
 baler
 sited
 shies
 hasps
-brung
 holed
 swank
 looky
@@ -3809,7 +3791,6 @@ divot
 kiwis
 vetch
 squib
-sitar
 kiddo
 dyers
 cotta
@@ -3826,7 +3807,6 @@ runny
 unpin
 julep
 globs
-nudes
 sushi
 tacky
 stoke
@@ -3895,7 +3875,6 @@ moire
 scion
 henna
 kraut
-dicks
 lifer
 prigs
 bebop
@@ -4496,8 +4475,6 @@ toady
 naiad
 hider
 nuked
-fatso
-sluts
 obits
 narcs
 tyros
@@ -4807,7 +4784,6 @@ curia
 kebob
 cycad
 talky
-fucks
 tapis
 amide
 dolce
@@ -5067,7 +5043,6 @@ ousel
 umiak
 cuppy
 hames
-shits
 azine
 glads
 tacet
@@ -5389,7 +5364,6 @@ weald
 sexed
 folic
 poxed
-cunts
 anile
 kiths
 becks
@@ -5633,7 +5607,6 @@ poler
 yecch
 fluky
 doeth
-twats
 cruds
 bebug
 bider
@@ -5654,7 +5627,6 @@ luted
 cukes
 bairn
 bight
-arses
 crump
 loggy
 blini
