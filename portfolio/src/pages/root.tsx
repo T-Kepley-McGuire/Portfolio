@@ -133,7 +133,7 @@ export default function Root(): JSX.Element {
         <div className="page-content">
           <Outlet />
         </div>
-        <footer>
+        {/* <footer>
           <div className="contact-info">
             <a
               className="footer-link"
@@ -148,7 +148,7 @@ export default function Root(): JSX.Element {
               Github
             </a>
           </div>
-        </footer>
+        </footer> */}
       </div>
     </>
   );

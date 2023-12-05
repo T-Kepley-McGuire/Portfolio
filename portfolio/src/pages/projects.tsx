@@ -57,7 +57,6 @@ export default function Projects(): JSX.Element {
       <div className="sidebar">
         <p className="sidebar-title">Projects: </p>
         {markdownList.map((md: MarkdownFrontmatter) => {
-          console.log(md.content);
           return (
             <a
               key={md.title}
