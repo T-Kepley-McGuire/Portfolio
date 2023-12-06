@@ -2,16 +2,15 @@ import { Link, useLocation } from "react-router-dom";
 
 import "../css/home.css";
 import { useState } from "react";
+import MandelbrotCard from "../components/cards/MandelbrotCard";
+import WordsCard from "../components/cards/WordsCard";
 
 function Home(): JSX.Element {
   const location = useLocation();
 
+  const [hovering, setHovering] = useState(false);
+
   const cardList = [
-    {
-      link: "nothing",
-      option: "mandelbrot",
-      icon: "home",
-    },
     {
       link: "",
       option: "home",
@@ -43,7 +42,6 @@ function Home(): JSX.Element {
       icon: "lightbulb",
     },
   ];
-  const mandelbrotImages = [0, 1, 2, 3, 4];
 
   return (
     <main>
@@ -56,53 +54,21 @@ function Home(): JSX.Element {
       </div>
       <div className="content">
         <div className="page-card-container">
+          <MandelbrotCard />
+          <WordsCard />
           {cardList.map((card) => {
-            if (card.option === "mandelbrot") {
-              return (
-                <div key={card.option} className="page-card">
-                  <Link
-                    className={`page-card-content ${
-                      location.pathname === `/${card.link}`
-                        ? "active"
-                        : undefined
-                    }`}
-                    to={`/${card.link}`}
-                  >
-                    <h3>{card.option}</h3>
-                    <img
-                      className="static-image"
-                      src="mandelbrot-render.png"
-                      alt="mandelbrot set"
-                    ></img>
-                    {mandelbrotImages.map((image, index) => {
-                      return (
-                        <img
-                          key={image}
-                          className="animation-image"
-                          src="mandelbrot-zoom-part.png"
-                          alt="mandelbrot set"
-                          style={{ animationDelay: `${-index * 0.815}s` }}
-                        ></img>
-                      );
-                    })}
-                  </Link>
-                </div>
-              );
-            } else
-              return (
-                <div key={card.option} className="page-card">
-                  <Link
-                    className={`page-card-content ${
-                      location.pathname === `/${card.link}`
-                        ? "active"
-                        : undefined
-                    }`}
-                    to={`/${card.link}`}
-                  >
-                    <h3>{card.option}</h3>
-                  </Link>
-                </div>
-              );
+            return (
+              <div key={card.option} className="page-card">
+                <Link
+                  className={`page-card-content ${
+                    location.pathname === `/${card.link}` ? "active" : undefined
+                  }`}
+                  to={`/${card.link}`}
+                >
+                  <h3>{card.option}</h3>
+                </Link>
+              </div>
+            );
           })}
         </div>
 
@@ -165,3 +131,31 @@ function Home(): JSX.Element {
 }
 
 export default Home;
+// function MandelbrotCard(card: { link: string; option: string; icon: string; }, setHovering, location, mandelbrotImages: number[], hovering: boolean) {
+//   return <div key={card.option} className="page-card">
+//     <Link
+//       onMouseOver={() => setHovering(true)}
+//       onMouseLeave={() => setHovering(false)}
+//       className={`page-card-content ${location.pathname === `/${card.link}`
+//           ? "active"
+//           : undefined}`}
+//       to={`/${card.link}`}
+//     >
+//       <h3>{card.option}</h3>
+//       {mandelbrotImages.map((image, index) => {
+//         return (
+//           <img
+//             key={image}
+//             className="animation-image"
+//             src="mandelbrot-zoom-part.png"
+//             alt="mandelbrot set"
+//             style={{
+//               animationPlayState: hovering ? "running" : "paused",
+//               animationDelay: `${-index * 0.815}s`,
+//             }}
+//           ></img>
+//         );
+//       })}
+//     </Link>
+//   </div>;
+// }

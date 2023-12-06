@@ -25,18 +25,7 @@
 
 .page-card-content:hover {
   transform: scale(1.1);
-  & > .animation-image {
-    animation-play-state: running;
-    animation-duration: 4.075s;
-    animation-name: zoom;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-  }
-  & > .static-image {
-    opacity: 0;
-  }
 }
-
 
 svg {
   cursor: pointer;
@@ -59,15 +48,20 @@ svg:hover {
 }
 
 .animation-image {
-  transform: translateY(-1000px);
+  animation-duration: 4.075s;
+  animation-name: zoom;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
+  /* transform: translateY(-1000px); */
   opacity: 0;
-  animation-play-state: paused;
   left: 0;
   top: 20%;
   position: absolute;
   width: 100%;
   overflow: hidden;
   image-rendering: smooth;
+  filter: invert(20%);
 }
 
 .static-image {
