@@ -1,79 +1,76 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import "../../css/words-card.css";
+import JSConfetti from "js-confetti";
 
 export default function WordsCard(): JSX.Element {
+  const jsConfetti = useRef<JSConfetti>();
+
+
   const [hovering, setHovering] = useState(false);
   const [timer, setTimer] = useState(0);
+  const [finalTime, setFinalTime] = useState(0);
+  const [confettiTime, setConfettiTime] = useState(0);
 
-//   const init: boolean[][] = [];
-//   for (let i = 0; i < 5; i++) {
-//     const sub = [];
-//     for (let j = 0; j < 5; j++) {
-//       if (i < 1) sub.push(Math.random() < 0.3);
-//       else sub.push(init[i - 1][j] || Math.random() < 0.3);
-//     }
-//     init.push(sub);
-//   }
   const [words, setWords] = useState<boolean[][]>([[false]]);
 
   const resetWords = () => {
+    const numWords = 5;
+    const numLetters = 5;
+    const offset = 0.8;
+    const letterFlipTime = 0.2;
+
+    const chanceCorrect = 0.3;
     const init: boolean[][] = [];
+    let settedConfetti = false;
     for (let i = 0; i < 5; i++) {
       const sub = [];
       for (let j = 0; j < 5; j++) {
-        if (i < 1) sub.push(Math.random() < 0.3);
-        else sub.push(init[i - 1][j] || Math.random() < 0.3);
+        if (i < 1) sub.push(Math.random() < chanceCorrect);
+        else sub.push(init[i - 1][j] || Math.random() < chanceCorrect);
+      }
+      if (!settedConfetti && sub.every((val) => val === true)) {
+        setConfettiTime(
+          (i + 1) * numLetters * letterFlipTime + Math.random() / 1000 - 0.3
+        );
+        setFinalTime((i + 1) * numLetters * letterFlipTime + offset);
+        settedConfetti = true;
       }
       init.push(sub);
     }
     setWords(init);
-  };
 
-  useEffect(resetWords, [])
-
-  const handleAnimationEnd = (animation: React.AnimationEvent) => {
-    if (animation.animationName === "back") {
-      console.log("here");
+    if (!settedConfetti) {
+      setConfettiTime(0);
+      setFinalTime(numWords * numLetters * letterFlipTime + offset);
     }
   };
 
-  const letterCards: JSX.Element[] = words.map((word, index): JSX.Element => {
-    return (
-      <div key={`row ${index}`} className="card-word-row">
-        {word.map((letter, i): JSX.Element => {
-          return (
-            <div
-              key={`letter ${i}`}
-              className={`card-word-letter ${
-                timer > index * word.length * 0.2 + i * 0.1
-                  ? `flipped ${letter ? "mini-correct" : ""}`
-                  : ""
-              }`}
-              //   style={{
-              //     animation: `${letter ? "flip-blue" : "flip-gray"} 0.5s ${
-              //       0.1 + index * word.length * 0.2 + i * 0.1
-              //     }s forwards, back 0.5s ${
-              //       words.length * word.length * 0.2
-              //     }s forwards`,
+  useEffect(() => {
+    resetWords();
 
-              //     // animationDelay: `${index * word.length * 0.3 + i * 0.1}s`,
-              //     animationPlayState: hovering ? "running" : "paused",
-              //   }}
-              onAnimationEnd={handleAnimationEnd}
-            />
-          );
-        })}
-      </div>
-    );
-  });
+    const canvas = document.getElementById("confetti-canvas");
+    if (canvas instanceof HTMLCanvasElement)
+      jsConfetti.current = new JSConfetti({ canvas });
+
+  }, []);
+
+  useEffect(() => {
+    if (confettiTime !== 0 && confettiTime < timer && jsConfetti.current) {
+      jsConfetti.current.addConfetti({
+        confettiRadius: 3,
+        confettiColors: ["#180D6E", "#4298ED", "#40FFB3", "#3BCEAC", "#0EAD69"],
+      });
+      setConfettiTime(0);
+    }
+  }, [timer]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (hovering) {
         setTimer((current) => {
-          if (current >= words.length * words[0].length * 0.2) {
+          if (current >= finalTime) {
             resetWords();
             return -0.2;
           }
@@ -83,7 +80,31 @@ export default function WordsCard(): JSX.Element {
     }, 100);
 
     return () => clearInterval(interval);
-  }, [hovering]);
+  }, [hovering, finalTime]);
+
+  const letterCards: JSX.Element[] = words.map((word, index): JSX.Element => {
+    const allTrueAndPrevTrue =
+      index - 1 >= 0 &&
+      word.every((letter) => letter === true) &&
+      words[index - 1].every((letter) => letter === true);
+    return (
+      <div key={`row ${index}`} className="card-word-row">
+        {word.map((letter, i): JSX.Element => {
+          return (
+            <div
+              key={`letter ${i}`}
+              className={`card-word-letter ${
+                !allTrueAndPrevTrue &&
+                timer > index * word.length * 0.2 + i * 0.1
+                  ? `flipped ${letter ? "mini-correct" : ""}`
+                  : ""
+              }`}
+            />
+          );
+        })}
+      </div>
+    );
+  });
 
   return (
     <div key="words" className="page-card">
@@ -95,6 +116,7 @@ export default function WordsCard(): JSX.Element {
         className="page-card-content"
         to={"/wordguesser"}
       >
+        <canvas id="confetti-canvas" className="card-word-canvas" />
         <h3>word guesser</h3>
         <div className="card-word">{letterCards}</div>
       </Link>

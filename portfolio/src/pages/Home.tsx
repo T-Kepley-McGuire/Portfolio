@@ -73,32 +73,6 @@ function Home(): JSX.Element {
         </div>
 
         <h3>Who I am</h3>
-        <svg
-          width="120"
-          height="120"
-          viewBox="0 0 120 120"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g id="Frame 1">
-            <g id="dark">
-              <path
-                id="second"
-                d="M47 58.2679C48.3333 59.0377 48.3333 60.9623 47 61.7321L15.5 79.9186C14.1667 80.6884 12.5 79.7261 12.5 78.1865V41.8135C12.5 40.2739 14.1667 39.3116 15.5 40.0814L47 58.2679Z"
-              />
-            </g>
-            <g id="light">
-              <path
-                id="first"
-                d="M47 58.268C48.3333 59.0378 48.3333 60.9623 47 61.7321L15.5 79.9186C14.1667 80.6884 12.5 79.7262 12.5 78.1866V41.8135C12.5 40.2739 14.1667 39.3116 15.5 40.0814L47 58.268Z"
-              />
-              <path
-                id="third"
-                d="M66 58.2679C67.3333 59.0377 67.3333 60.9623 66 61.7321L34.5 79.9186C33.1667 80.6884 31.5 79.7261 31.5 78.1865V41.8135C31.5 40.2739 33.1667 39.3116 34.5 40.0814L66 58.2679Z"
-              />
-            </g>
-          </g>
-        </svg>
         <p>
           When I discovered coding, I knew I had found a passion. As a former
           math enthusiast, coding was an extension of math that I could realize

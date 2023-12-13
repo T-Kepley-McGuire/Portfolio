@@ -5,6 +5,7 @@ import text from "../utilities/words";
 
 import "../css/word-guesser.css";
 import JSConfetti from "js-confetti";
+import WordGuesserAnalytics from "../components/WordGuesserAnalytics";
 
 function useQuery() {
   const location = useLocation();
@@ -39,6 +40,7 @@ export default function WordGuesser(): JSX.Element {
   const [successful, setSuccessful] = useState(0);
   const [streak, setStreak] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [guesses, setGuesses] = useState<string[]>([]);
 
   useEffect(() => {
     const tempSeed =
@@ -49,7 +51,7 @@ export default function WordGuesser(): JSX.Element {
   useEffect(() => {
     setCurrentWorkingLetter(0);
 
-    if(currentWorkingLine >= init.length) {
+    if (currentWorkingLine >= init.length) {
       setSuccessful(-1);
     }
   }, [currentWorkingLine]);
@@ -97,7 +99,7 @@ export default function WordGuesser(): JSX.Element {
       newWords[currentWorkingLine][currentWorkingLetter] = "";
       return newWords;
     });
-    if(currentWorkingLetter > 0) {
+    if (currentWorkingLetter > 0) {
       setCurrentWorkingLetter(currentWorkingLetter - 1);
     }
   };
@@ -146,7 +148,15 @@ export default function WordGuesser(): JSX.Element {
           });
         }
       });
-      
+
+      setGuesses((currentGuesses) => {
+        const newGuesses = [...currentGuesses];
+        const newWord = words[currentWorkingLine].join("");
+        newGuesses.push(newWord);
+        console.log("setting guesses", newGuesses);
+        return newGuesses;
+      });
+
       if (words[currentWorkingLine].join("") === theWord.join("")) {
         setSuccessful(1);
       }
@@ -161,6 +171,7 @@ export default function WordGuesser(): JSX.Element {
     setWords(init);
     setSuccessful(0);
     setSeed(Math.floor(Math.random() * wordList.length));
+    setGuesses([]);
   };
 
   function submissionError() {
@@ -202,8 +213,8 @@ export default function WordGuesser(): JSX.Element {
 
   function encode(toEncode: number): string {
     let prepend = getRandomString(5);
-    while(decode(prepend) <= toEncode) {
-      if(toEncode - decode(prepend) > wordList.length) {
+    while (decode(prepend) <= toEncode) {
+      if (toEncode - decode(prepend) > wordList.length) {
         prepend += getRandomString(1);
       } else {
         prepend += String.fromCharCode(toEncode - decode(prepend));
@@ -213,93 +224,98 @@ export default function WordGuesser(): JSX.Element {
     return prepend;
   }
 
-  const chars = "01234556789abcdefghijklmnopqrstuvwxyz"
+  const chars = "01234556789abcdefghijklmnopqrstuvwxyz";
   function getRandomString(length: number): string {
-    if(length === 0) return "";
-    if(length === 1) return chars[Math.floor(Math.random() * chars.length)];
+    if (length === 0) return "";
+    if (length === 1) return chars[Math.floor(Math.random() * chars.length)];
     let result = "";
-    for(let i = 0; i < length; i++) {
+    for (let i = 0; i < length; i++) {
       result += chars[Math.floor(Math.random() * chars.length)];
     }
     return result;
   }
 
   return (
-    <main>
-      <h3>
-        {successful > 0
-          ? "Congratulations!"
-          : successful < 0
-          ? `The word was ${theWord.join("")}`
-          : "Guess the word"}
-      </h3>
-      <p>
-        Current streak: {streak}
-      </p>
-      {init.map((word, wordIndex) => {
-        return (
-          <form
-            onSubmit={(event) => handleSubmit(event, wordIndex)}
-            className={`word-row ${
-              wordIndex === currentWorkingLine && successful <= 0
-                ? wordError
-                  ? "error"
-                  : "current-row"
-                : ""
-            }`}
-            id={"word " + wordIndex}
-            key={"word " + wordIndex}
-          >
-            {word.map((letter, letterIndex) => {
-              return (
-                <input
-                  onKeyUp={(e) => {
-                    if (e.key === "Enter") handleSubmit(e, wordIndex);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "ArrowRight") handleMove(1);
-                    if (e.key === "ArrowLeft") handleMove(-1);
-                    if (e.key === "Backspace" && letter === "") handleBackspace();
-                  }}
-                  disabled={currentWorkingLine !== wordIndex || successful !== 0}
-                  onFocus={handleFocus}
-                  className={`letter ${
-                    correct[wordIndex][letterIndex] === 1
-                      ? "correct"
-                      : correct[wordIndex][letterIndex] === 0
-                      ? "partially-correct"
-                      : ""
-                  } ${submitted[wordIndex] ? "submitted" : ""}`}
-                  key={letterIndex}
-                  id={wordIndex + " " + letterIndex}
-                  onChange={handleChange}
-                  value={words[wordIndex][letterIndex]}
-                  maxLength={1}
-                  style={{
-                    transition: `transform 0.7s ease ${
-                      0.1 * letterIndex
-                    }s, background-color 0.35s ease ${0.1 * letterIndex}s`,
-                  }}
-                ></input>
-              );
-            })}
-          </form>
-        );
-      })}
-      <button className="form-button" onClick={copy}>
-        <i className="material-icons">upload</i> Share
-      </button>
-      <button
-        className={`form-button ${
-          successful !== 0 ? "" : "hidden"
-        }`}
-        onClick={handleReset}
-      >
-        <i className="material-icons">{successful < 0 ? "chevron_left" : "chevron_right"}</i>{successful < 0 ? "Reset" : "Next"}
-      </button>
-      <p className={copied ? "copy-message" : "copy-message-hidden"}>
-        Copied URL to clipboard
-      </p>
-    </main>
+    <>
+      <main>
+        <h3>
+          {successful > 0
+            ? "Congratulations!"
+            : successful < 0
+            ? `The word was ${theWord.join("")}`
+            : "Guess the word"}
+        </h3>
+        <p>Current streak: {streak}</p>
+        {init.map((word, wordIndex) => {
+          return (
+            <form
+              onSubmit={(event) => handleSubmit(event, wordIndex)}
+              className={`word-row ${
+                wordIndex === currentWorkingLine && successful <= 0
+                  ? wordError
+                    ? "error"
+                    : "current-row"
+                  : ""
+              }`}
+              id={"word " + wordIndex}
+              key={"word " + wordIndex}
+            >
+              {word.map((letter, letterIndex) => {
+                return (
+                  <input
+                    onKeyUp={(e) => {
+                      if (e.key === "Enter") handleSubmit(e, wordIndex);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "ArrowRight") handleMove(1);
+                      if (e.key === "ArrowLeft") handleMove(-1);
+                      if (e.key === "Backspace" && letter === "")
+                        handleBackspace();
+                    }}
+                    disabled={
+                      currentWorkingLine !== wordIndex || successful !== 0
+                    }
+                    onFocus={handleFocus}
+                    className={`letter ${
+                      correct[wordIndex][letterIndex] === 1
+                        ? "correct"
+                        : correct[wordIndex][letterIndex] === 0
+                        ? "partially-correct"
+                        : ""
+                    } ${submitted[wordIndex] ? "submitted" : ""}`}
+                    key={letterIndex}
+                    id={wordIndex + " " + letterIndex}
+                    onChange={handleChange}
+                    value={words[wordIndex][letterIndex]}
+                    maxLength={1}
+                    style={{
+                      transition: `transform 0.7s ease ${
+                        0.1 * letterIndex
+                      }s, background-color 0.35s ease ${0.1 * letterIndex}s`,
+                    }}
+                  ></input>
+                );
+              })}
+            </form>
+          );
+        })}
+        <button className="form-button" onClick={copy}>
+          <i className="material-icons">upload</i> Share
+        </button>
+        <button
+          className={`form-button ${successful !== 0 ? "" : "hidden"}`}
+          onClick={handleReset}
+        >
+          <i className="material-icons">
+            {successful < 0 ? "chevron_left" : "chevron_right"}
+          </i>
+          {successful < 0 ? "Reset" : "Next"}
+        </button>
+        <p className={copied ? "copy-message" : "copy-message-hidden"}>
+          Copied URL to clipboard
+        </p>
+      </main>
+      <WordGuesserAnalytics guesses={guesses}/>
+    </>
   );
 }

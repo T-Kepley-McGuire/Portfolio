@@ -13,7 +13,7 @@ canvas {
     width: 100%;
     height: 60px;
 
-    background-image: linear-gradient(var(--accent-color-70) 60px, var(--gray-90) 100px);
+    background-image: linear-gradient(var(--accent-color-30) 60px, var(--gray-10) 100px);
     border-radius: 10px;
 
     position: absolute;
@@ -30,6 +30,7 @@ canvas {
       transition: all 0.35s ease 0s;
     }
   }
+
   & > .overlay {
     width: 100%;
     height: 60px;
@@ -37,6 +38,10 @@ canvas {
     position: absolute;
     z-index: 3;
     cursor: pointer;
+  }
+
+  & > :not(.overlay):not(.header):not(h3) {
+    display: none;
   }
 
   & > p, h4, code {
@@ -58,8 +63,8 @@ canvas {
   & > .header {
     height: 100%;
     background-image: linear-gradient(
-      var(--accent-color-70) 50px,
-      var(--gray-90) 100px
+      var(--accent-color-30) 50px,
+      var(--gray-20) 100px
     );
 
 
@@ -67,9 +72,14 @@ canvas {
       rotate: 90deg;
     }
   }
-  & > p, h4, code {
+  /* & > p, h4, code {
+    display: block;
+  } */
+
+  & > :not(.overlay):not(.header):not(h3) {
     display: block;
   }
+
 
   & > h3 {
     margin-bottom: 50px;

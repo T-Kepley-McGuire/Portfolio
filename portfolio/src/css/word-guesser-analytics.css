@@ -1,0 +1,11 @@
+.analytics {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.guess-analysis {
+    margin: 10px;
+    transition: all 0.3s ease;
+}

@@ -4550,10 +4550,6 @@ elate
 dolor
 wryer
 snots
-quais
-coked
-gimel
-gorse
 minas
 goest
 agape
@@ -5648,7 +5644,6 @@ mussy
 finny
 rimer
 login
-molas
 cirri
 huzza
 agone
