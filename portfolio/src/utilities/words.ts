@@ -4900,7 +4900,6 @@ vapes
 whoas
 bunko
 yolky
-ulnas
 reeky
 bodge
 brant
@@ -5546,7 +5545,6 @@ agley
 corgi
 dashy
 doser
-dildo
 apsos
 xored
 laker

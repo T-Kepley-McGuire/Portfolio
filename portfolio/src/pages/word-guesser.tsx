@@ -315,7 +315,7 @@ export default function WordGuesser(): JSX.Element {
           Copied URL to clipboard
         </p>
       </main>
-      <WordGuesserAnalytics guesses={guesses}/>
+      <WordGuesserAnalytics guesses={guesses} word={theWord}/>
     </>
   );
 }
