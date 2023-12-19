@@ -8,6 +8,7 @@ import React, {
 // import { CSSTranitionGroup } from "react-transition-group";
 
 import text from "../utilities/words";
+import top100 from "../utilities/top-100-guesses"
 
 import "../css/word-guesser-analytics.css";
 import exp from "constants";
@@ -32,10 +33,12 @@ export default function WordGuesserAnalytics({
   useEffect(() => {
     const evalLists = getWordEvalListsFromGuesses(guesses, word);
 
-    console.log("filtered list", checkAgainstFoundInfo(wordList, evalLists));
+    // console.log("filtered list", checkAgainstFoundInfo(wordList, evalLists));
   }, [guesses, word]);
 
   const wordList = text.split("\n");
+  const topGuesses = top100.split("\n")
+
 
   const handleClick = (index: number) => {
     setExpanded(index);
@@ -139,20 +142,25 @@ export default function WordGuesserAnalytics({
         ) : (
           <p>You correctly guessed {word.join("")}</p>
         )}
+        <p>Possibilites left: {getGuessesLeft(currentIndex).join(", ").toUpperCase()}</p>
       </div>
     );
   }, [expanded]);
 
+
   const getGuessesLeft = (index: number): string[] => {
+    console.log(guesses, index, guesses.slice(0, index + 1))
     if (index < 0) return wordList;
 
-    return checkAgainstFoundInfo(
-      wordList,
-      getWordEvalListsFromGuesses(
-        guesses.filter((guess, i) => i <= index),
-        word
-      )
-    );
+
+    return filterOnAllGuesses(wordList, guesses.slice(0, index), word.join(""), true)
+    // checkAgainstFoundInfo(
+    //   wordList,
+    //   getWordEvalListsFromGuesses(
+    //     guesses.filter((guess, i) => i <= index),
+    //     word
+    //   )
+    // );
   };
 
   return (
@@ -180,6 +188,120 @@ function getWordEvalListsFromGuesses(
   });
 
   return { positives: pos, negatives: neg, maybes: may };
+}
+
+function getPattern(guess: string, wordToGuess: string): string {
+  let pattern: string = "";
+  for (let index = 0; index < guess.length; index++) {
+    if (guess[index] === wordToGuess[index]) {
+      pattern += "2";
+    } else if (wordToGuess.includes(guess[index])) {
+      pattern += "1";
+    } else {
+      pattern += "0";
+    }
+  }
+  return pattern;
+}
+
+function filterOnAllGuesses(wordList: string[], guess: string[], wordToGuess: string, log: boolean = false): string[] {
+  let culledList = wordList;
+  for(let i = 0; i < guess.length; i++) {
+    console.log(guess[i] + "  " + culledList.length);
+    culledList = cullWordList(culledList, guess[i], getPattern(guess[i], wordToGuess), log);
+  }
+
+  return culledList;
+}
+
+function cullWordList(
+  wordList: string[],
+  guess: string,
+  pattern: string,
+  log: boolean = false
+): string[] {
+  if (pattern.length !== 5 || guess.length !== 5) {
+    console.error("error");
+    return [];
+  }
+
+
+  let posString = "";
+  let negString = "";
+  let posMaybeString = "";
+  let negMaybeString = "";
+
+  for (let loc = 0; loc < pattern.length; loc++) {
+    negString += pattern[loc] === "0" ? guess[loc] : "";
+    posMaybeString += pattern[loc] === "1" ? `(?=.*${guess[loc]})` : "";
+    negMaybeString += pattern[loc] === "1" ? `[^${guess[loc]}]` : ".";
+    posString += pattern[loc] === "2" ? guess[loc] : ".";
+  }
+
+  const posRegex = new RegExp(`^${posString.toLowerCase()}$`);
+  const negRegex = new RegExp(`^[^${negString.toLowerCase()}]{5}$` || "");
+  const posMaybeRegex = new RegExp(`^${posMaybeString.toLowerCase()}.*$`);
+  const negMaybeRegex = new RegExp(`^${negMaybeString.toLowerCase()}$`);
+
+  if (log) {
+    console.log(
+      `word: ${guess}, ${pattern}\npositives: ${posString}, ${posRegex}\nnegatives: ${negString}, ${negRegex}\nmaybe so: ${posMaybeString}, ${posMaybeRegex}\nmaybe not: ${negMaybeString}, ${negMaybeRegex}\n`
+    );
+  }
+
+  return wordList.filter(
+    (word) =>
+      posRegex.test(word) &&
+      negRegex.test(word) &&
+      posMaybeRegex.test(word) &&
+      negMaybeRegex.test(word)
+  );
+}
+
+type WordPatternDictionary = { [pattern: string]: number };
+
+function calculateAllEntropies(wordList: string[]): [string, number][] {
+  const wordPatternsAsDictionaries: WordPatternDictionary[] = Array.from(
+    { length: wordList.length },
+    () => ({})
+  );
+
+  // for every possible guess...
+  for (let index = 0; index < wordList.length; index++) {
+    const guess = wordList[index];
+    // compare it to every possible answer
+    // this second wordList can be replaced with any subset of possible guesses
+    for (const goal of wordList) {
+      // with each comparison, get the pattern...
+      const pattern = getPattern(guess, goal);
+      wordPatternsAsDictionaries[index][pattern] =
+        (wordPatternsAsDictionaries[index][pattern] || 0) + 1;
+    }
+  }
+
+  function calcEntrop(wordPatterns: WordPatternDictionary): number {
+    function safeLog2(x: number): number {
+      return x > 0 ? Math.log2(x) : 0;
+    }
+    let entropy_sum = 0;
+    for (const pattern in wordPatterns) {
+      const prob = wordPatterns[pattern] / wordList.length;
+      entropy_sum += prob * safeLog2(1 / prob);
+    }
+    return entropy_sum;
+  }
+
+  const dictOfEntropy: { [word: string]: number } = {};
+  for (let index = 0; index < wordPatternsAsDictionaries.length; index++) {
+    const wordPattern = wordPatternsAsDictionaries[index];
+    dictOfEntropy[wordList[index]] = calcEntrop(wordPattern);
+  }
+
+  const sortedEntropy: [string, number][] = Object.entries(dictOfEntropy).sort(
+    (a, b) => b[1] - a[1]
+  );
+
+  return sortedEntropy;
 }
 
 function checkAgainstFoundInfo(

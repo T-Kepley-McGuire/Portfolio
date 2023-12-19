@@ -51,7 +51,6 @@
     width: 400px;
     height: 50vh;
     opacity: 1;
-    transition: all 0.5s ease 0.1s;
 
     border-radius: 10px;
     background-color: hsla(0, 0%, 30%, 0.8);
@@ -75,7 +74,9 @@
     border-radius: 5px;
 }
 
-
+.fade-in {
+    animation: fadein 1s;
+}
 
 .hidden-analytics {
     opacity: 0;
