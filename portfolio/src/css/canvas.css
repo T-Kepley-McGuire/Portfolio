@@ -30,7 +30,7 @@ canvas {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-
+    background-color: var(--gray-40);
     transition: all 0.5s ease 0s;
 }
 
@@ -41,4 +41,9 @@ canvas {
 
 .highlight {
     background-color: white;
+}
+
+.tips {
+    position: absolute;
+    top: 100px
 }

@@ -14,8 +14,8 @@ function AnimationCanvas({
   const [menuItems, setMenuItems] = useState([
     { label: "erase", function: () => console.log("erase") },
     { label: "color", function: () => console.log("color") },
-    { label: "fill", function: () => console.log("fill") },
-    { label: "air", function: () => console.log("air") },
+    { label: "pass", function: () => console.log("fill") },
+    { label: "pass", function: () => console.log("air") },
   ])
 
   useEffect(() => {

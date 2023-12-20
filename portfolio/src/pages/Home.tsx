@@ -56,7 +56,7 @@ function Home(): JSX.Element {
         <div className="page-card-container">
           <MandelbrotCard />
           <WordsCard />
-          {cardList.map((card) => {
+          {/* {cardList.map((card) => {
             return (
               <div key={card.option} className="page-card">
                 <Link
@@ -69,7 +69,7 @@ function Home(): JSX.Element {
                 </Link>
               </div>
             );
-          })}
+          })} */}
         </div>
 
         <h3>Who I am</h3>
