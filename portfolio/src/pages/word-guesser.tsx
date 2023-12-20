@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import text from "../utilities/words";
+import text from "../utilities/word-processing/words";
 
 import "../css/word-guesser.css";
 import JSConfetti from "js-confetti";
@@ -44,7 +44,7 @@ export default function WordGuesser(): JSX.Element {
 
   useEffect(() => {
     const tempSeed =
-      Number(query.get("seed")) || Math.floor(Math.random() * wordList.length);
+      Number(query.get("seed")) || Math.floor(wordList.length - Math.sqrt(Math.random()) * wordList.length/2);
     setSeed(tempSeed);
   }, []);
 
