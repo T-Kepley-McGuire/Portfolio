@@ -50,8 +50,7 @@ export default function WordGuesser(): JSX.Element {
 
   useEffect(() => {
     setCurrentWorkingLetter(0);
-
-    if (currentWorkingLine >= init.length) {
+    if (currentWorkingLine >= init.length && guesses[guesses.length - 1] !== theWord.join("")) {
       setSuccessful(-1);
     }
   }, [currentWorkingLine]);

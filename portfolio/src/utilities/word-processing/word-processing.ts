@@ -113,9 +113,7 @@ function calcEntrop(
   wordPatterns: WordPatternDictionary,
   totalWords: number
 ): number {
-  function safeLog2(x: number): number {
-    return x > 0 ? Math.log2(x) : 0;
-  }
+  
 
   let entropy_sum = 0;
   for (const pattern in wordPatterns) {
@@ -126,9 +124,17 @@ function calcEntrop(
   return entropy_sum;
 }
 
+function safeLog2(x: number): number {
+  return x > 0 ? Math.log2(x) : 0;
+}
+
+function probabilityToEntropy(probability: number): number {
+  return safeLog2(1 / probability);
+}
+
 // Example usage:
 // const wordList = ["apple", "banana", "cherry"];
 // const result = rankByEntropy(wordList);
 // console.log(result);
 
-export { cullList, repeatedlyCullList, rankByEntropy };
+export { cullList, repeatedlyCullList, rankByEntropy, probabilityToEntropy };

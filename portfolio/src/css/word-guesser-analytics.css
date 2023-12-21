@@ -25,9 +25,16 @@
   width: 150px;
 
   cursor: pointer;
+  transition: all 0.5s ease;
+
+  &:hover {
+    & > i {
+      transform: translateX(5px);
+    }
+  }
 
   & > i {
-
+    transition: all 0.2s ease;
     background-color: var(--gray-30);
     border-radius: 5px;
     margin: 0 5px;
@@ -46,10 +53,9 @@
 .analytics-expanded {
     position: absolute;
 
-    bottom: 35%;
+    top: 15%;
     left: 62%;
     width: 400px;
-    height: 50vh;
     opacity: 1;
 
     border-radius: 10px;

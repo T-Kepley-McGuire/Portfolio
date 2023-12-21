@@ -11,6 +11,7 @@ import top100 from "../utilities/word-processing/top-100-guesses";
 
 import "../css/word-guesser-analytics.css";
 import {
+  probabilityToEntropy,
   rankByEntropy,
   repeatedlyCullList,
 } from "../utilities/word-processing/word-processing";
@@ -43,7 +44,7 @@ export default function WordGuesserAnalytics({
   }, [expanded]);
 
   useEffect(() => {
-    if(guesses.length === 0) setExpanded(-1);
+    if (guesses.length === 0) setExpanded(-1);
     setWordDivs(() => {
       return guesses.map((guess, index) => {
         return (
@@ -77,6 +78,18 @@ export default function WordGuesserAnalytics({
       prevIndex >= 0
         ? rankByEntropy(getGuessesLeft(prevIndex))
         : rankByEntropy(topGuesses);
+
+    const optimalCurrentGuessList = getGuessesLeft(
+      currentIndex,
+      rankedPreviousGuesses[0][0]
+    );
+    const bitsGainedRealized = probabilityToEntropy(
+      currentGuessList.length / previousGuessList.length
+    );
+    const bitsGainedExpected = rankedPreviousGuesses[0][1];
+    const bitsGainedPossible = probabilityToEntropy(
+      optimalCurrentGuessList.length / previousGuessList.length
+    );
 
     const rankedNextGuesses =
       currentIndex >= 0 ? rankByEntropy(getGuessesLeft(currentIndex)) : [];
@@ -115,6 +128,30 @@ export default function WordGuesserAnalytics({
         ) : (
           <p>You correctly guessed {word.join("")}</p>
         )}
+        <p>
+          With an optimal guess, you could have expected to gain about{" "}
+          <span className="highlight-word">
+            {Math.round(bitsGainedExpected * 100) / 100}
+          </span>{" "}
+          bits of information
+        </p>
+        <p>
+          With that guess, you gained{" "}
+          <span className="highlight-word">
+            {Math.round(bitsGainedRealized * 100) / 100}
+          </span>{" "}
+          bits of information. This is{" "}
+          {bitsGainedRealized > bitsGainedPossible
+            ? `better than `
+            : `worse than `}
+          the optimal guess by{" "}
+          <span className="highlight-word">
+            
+            {Math.round(
+              Math.abs(bitsGainedPossible - bitsGainedRealized) * 100
+            ) / 100}
+          </span> bits
+        </p>
         <p className="spoiler-container">
           You could have guessed{" "}
           {showSpoilers[0] ? (
@@ -148,14 +185,18 @@ export default function WordGuesserAnalytics({
     );
   }, [expanded, showSpoilers]);
 
-  const getGuessesLeft = (index: number): string[] => {
+  const getGuessesLeft = (
+    index: number,
+    replaceLast: string | undefined = undefined
+  ): string[] => {
     if (index < 0) return wordList;
 
-    return repeatedlyCullList(
-      wordList,
-      guesses.slice(0, index + 1),
-      word.join("")
-    );
+    const partialGuesses = guesses.slice(0, index + 1);
+    if (replaceLast) {
+      partialGuesses[partialGuesses.length - 1] = replaceLast.toUpperCase();
+    }
+
+    return repeatedlyCullList(wordList, partialGuesses, word.join(""));
   };
 
   return (
