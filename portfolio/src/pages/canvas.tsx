@@ -48,13 +48,14 @@ function Canvas() {
     //ctx.filter = "opacity(50%)";
 
     if (mouseDown.current) {
+      const l = mousePos.current.length;
       ctx.beginPath();
       ctx.moveTo(mousePos.current[0].x, mousePos.current[0].y);
       ctx.quadraticCurveTo(
-        mousePos.current[Math.floor(mousePos.current.length / 2)].x,
-        mousePos.current[Math.floor(mousePos.current.length / 2)].y,
-        mousePos.current[mousePos.current.length - 1].x,
-        mousePos.current[mousePos.current.length - 1].y
+        mousePos.current[Math.floor(l / 2)].x,
+        mousePos.current[Math.floor(l / 2)].y,
+        mousePos.current[l - 1].x,
+        mousePos.current[l - 1].y
       );
       ctx.stroke();
     }

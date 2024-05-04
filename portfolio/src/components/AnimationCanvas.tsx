@@ -67,9 +67,9 @@ function AnimationCanvas({
 
 export default AnimationCanvas;
 
-type UpdateOnAnimationFunction = (frameCount: number) => void;
+export type UpdateOnAnimationFunction = (frameCount: number) => void;
 
-type DrawFunction = (
+export type DrawFunction = (
   ctx: CanvasRenderingContext2D,
   width: number,
   height: number,

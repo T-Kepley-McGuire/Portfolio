@@ -18,7 +18,7 @@
     --main-color-30: hsl(var(--main-color-30-raw));
     --main-color-40-raw: var(--main-h) var(--main-s) 40%;
     --main-color-40: hsl(var(--main-color-40-raw));
-    --main-color-50-raw: var(--main-h) var(--main-s) 50%;
+    --main-color-50-raw: var(--main-h), var(--main-s), 50%;
     --main-color-50: hsl(var(--main-color-50-raw));
     --main-color-60-raw: var(--main-h) var(--main-s) 60%;
     --main-color-60: hsl(var(--main-color-60-raw));
@@ -26,7 +26,7 @@
     --main-color-70: hsl(var(--main-color-70-raw));
     --main-color-80-raw: var(--main-h) var(--main-s) 80%;
     --main-color-80: hsl(var(--main-color-80-raw));
-    --main-color-90-raw: var(--main-h) var(--main-s) 90%;
+    --main-color-90-raw: var(--main-h), var(--main-s), 90%;
     --main-color-90: hsl(var(--main-color-90-raw));
     --main-color-100-raw: var(--main-h) var(--main-s) 100%;
     --main-color-100: hsl(var(--main-color-100-raw));

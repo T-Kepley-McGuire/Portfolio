@@ -4,6 +4,8 @@ import "../css/home.css";
 import { useState } from "react";
 import MandelbrotCard from "../components/cards/MandelbrotCard";
 import WordsCard from "../components/cards/WordsCard";
+import CanvasCard from "../components/cards/CanvasCard";
+import TypingPracticeCard from "../components/cards/TypingPracticeCard";
 
 function Home(): JSX.Element {
   const location = useLocation();
@@ -56,6 +58,8 @@ function Home(): JSX.Element {
         <div className="page-card-container">
           <MandelbrotCard />
           <WordsCard />
+          <CanvasCard />
+          <TypingPracticeCard />
           {/* {cardList.map((card) => {
             return (
               <div key={card.option} className="page-card">
